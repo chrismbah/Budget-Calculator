@@ -3,7 +3,7 @@ import ExpenseForm from "./components/ExpenseForm";
 import Alert from "./components/Alert";
 import "./App.css";
 import { v4 as uuid } from "uuid";
-import { useState,useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 
 // const initialExpenses = [
 //   { id: uuid(), charge: "rent", amount: 1600 },
@@ -11,10 +11,12 @@ import { useState,useEffect } from "react";
 //   { id: uuid(), charge: "car payment", amount: 1400 },
 //   { id: uuid(), charge: "car payment", amount: 1400 },
 // ];
-//Stroing in local storgae so data is available when page is refreshed
+//Storing in local storage so data is available when page is refreshed
+
 const initialExpenses = localStorage.getItem("expenses")
   ? JSON.parse(localStorage.getItem("expenses"))
   : [];
+export const AppContext = createContext();
 
 function App() {
   //************State values****************** */
@@ -28,9 +30,10 @@ function App() {
   const [alert, setAlert] = useState({ show: false });
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(0);
+
   useEffect(() => {
-    localStorage.setItem("expenses",JSON.stringify(expenses));
-  },[expenses]);
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  }, [expenses]);
   //************Functionality****************** */
   function handleCharge(e) {
     setCharge(e.target.value);
@@ -42,7 +45,7 @@ function App() {
     setAlert({ show: true, type, text }); //Adds props to alert object
     setTimeout(() => {
       setAlert({ show: false });
-    }, 4000);
+    }, 5000);
   }
   function handleSubmit(e) {
     e.preventDefault();
@@ -92,34 +95,39 @@ function App() {
 
   return (
     <>
-      {alert.show && <Alert type={alert.type} text={alert.text} />}
-      <h1>Budget Calculator</h1>
-      <main className="App">
-        <ExpenseForm
-          charge={charge}
-          amount={amount}
-          handleAmount={handleAmount}
-          handleCharge={handleCharge}
-          handleSubmit={handleSubmit}
-          edit={edit}
-        />
-        <ExpenseList
-          expenses={expenses}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-          clearItems={clearItems}
-        />
-      </main>
-      <h1>
-        Total Spending:{" "}
-        <span className="total">
-          $
-          {expenses.reduce((total, curr) => {
-            //Reduces the object to a total figure
-            return (total += parseInt(curr.amount)); //Parse Int takes new amount as a number instead iof string
-          }, 0)}
-        </span>
-      </h1>
+      <AppContext.Provider
+        value={{
+          charge,
+          amount,
+          handleAmount,
+          handleCharge,
+          handleSubmit,
+          handleEdit,
+          handleDelete,
+          edit,
+          expenses,
+          clearItems,
+          id,
+          alert,
+        }}
+      >
+        {alert.show && <Alert type={alert.type} text={alert.text} />}
+        <h1>Budget Calculator</h1>
+        <main className="App">
+          <ExpenseForm />
+          <ExpenseList />
+        </main>
+        <h1>
+          Total Spending:{" "}
+          <span className="total">
+            $
+            {expenses.reduce((total, curr) => {
+              //Reduces the object to a total figure
+              return (total += parseInt(curr.amount)); //Parse Int takes new amount as a number instead iof string
+            }, 0)}
+          </span>
+        </h1>
+      </AppContext.Provider>
     </>
   );
 }

@@ -1,14 +1,10 @@
 import React from "react";
 import { MdSend } from "react-icons/md";
+import { useContext } from "react";
+import { AppContext } from "../App";
+export default function ExpenseForm() {
+  const { charge, amount, handleCharge, handleAmount,handleSubmit,edit } = useContext(AppContext);
 
-export default function ExpenseForm({
-  charge,
-  amount,
-  handleCharge,
-  handleAmount,
-  handleSubmit,
-  edit
-}) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-center">
@@ -38,7 +34,7 @@ export default function ExpenseForm({
         </div>
       </div>
       <button type="submit" className="btn">
-        {edit?"Edit":"Submit"} <MdSend className="btn-icon" />
+        {edit ? "Edit" : "Submit"} <MdSend className="btn-icon" />
       </button>
     </form>
   );

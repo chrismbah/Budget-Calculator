@@ -1,14 +1,11 @@
 import React from "react";
+import { useContext } from "react";
+import { AppContext } from "../App";
 import ExpenseItem from "./ExpenseItem";
 import { MdDelete } from "react-icons/md";
 
-export default function ExpenseList({
-  expenses,
-  handleEdit,
-  handlDelete,
-  handleDelete,
-  clearItems,
-}) {
+export default function ExpenseList() {
+  const {expenses,handleEdit,handleDelete,clearItems}=useContext(AppContext)
   return (
     <>
       <ul className="list">
@@ -25,7 +22,7 @@ export default function ExpenseList({
       </ul>
       {expenses.length > 0 && (
         <button className="btn" onClick={clearItems}>
-          Clear Expenses <MdDelete className="btn-icon" />{" "}
+          Clear Expenses <MdDelete className="btn-icon" />
         </button>
       )}
     </>
