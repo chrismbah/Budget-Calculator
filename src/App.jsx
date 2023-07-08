@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses));
-  }, [expenses]);
+  }, [expenses]); //As DOM refreshes and expenses array is rendered it stringifys a nd save to local storage
   //************Functionality****************** */
   function handleCharge(e) {
     setCharge(e.target.value);
