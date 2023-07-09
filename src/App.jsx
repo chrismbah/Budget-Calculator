@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses));
-  }, [expenses]); //As DOM refreshes and expenses array is rendered it stringifys a nd save to local storage
+  }, [expenses]); //As DOM refreshes and expenses array is rendered it stringifys and save to local storage
   //************Functionality****************** */
   function handleCharge(e) {
     setCharge(e.target.value);
@@ -48,7 +48,8 @@ function App() {
     }, 5000);
   }
   function handleSubmit(e) {
-    e.preventDefault();
+
+    e.preventDefault(); //Prevent page refresh on submit
     if (charge !== "" && amount > 0) {
       if (edit) {
         let tempExpenses = expenses.map((item) => {
@@ -118,7 +119,7 @@ function App() {
           <ExpenseList />
         </main>
         <h1>
-          Total Spending:{" "}
+          Total Spending:
           <span className="total">
             $
             {expenses.reduce((total, curr) => {
