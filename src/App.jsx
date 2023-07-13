@@ -51,7 +51,7 @@ function App() {
 
     e.preventDefault(); //Prevent page refresh on submit
     if (charge !== "" && amount > 0) {
-      if (edit) {
+      if (edit) {   //For editing item
         let tempExpenses = expenses.map((item) => {
           return item.id === id
             ? { ...item, charge: charge, amount: amount }
@@ -61,21 +61,30 @@ function App() {
         setEdit(false);
         handleAlert({ type: "success", text: "Item edited" });
       } else {
-        const singleExpense = { id: uuid(), charge: charge, amount: amount };
+        
+        const singleExpense = { id: uuid(), charge, amount };
         setExpenses([...expenses, singleExpense]);
         handleAlert({ type: "success", text: "item added" });
       }
 
       setCharge("");
       setAmount("");
-    } else {
-      //Handle alert
+
+    } else { 
+      //Handling alert
       handleAlert({
         type: "danger",
         text: "Charge cant be empty value and amoun of value has to be bigger than 0",
       });
     }
   }
+  // function onClick(){
+  //   if(charge!=="" && amount>0){
+  //     const singleExpense={id:uuid(),charge,amount}
+  //     setExpenses(...expenses,singleExpense)
+  //   }
+
+  // }
   function clearItems() {
     setExpenses([]);
     handleAlert({ type: "danger", text: "All Items deleted" });
